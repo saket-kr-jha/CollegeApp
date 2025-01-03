@@ -8,7 +8,7 @@ namespace DotNetCore_New.Data
         public CollegeDBContext(DbContextOptions<CollegeDBContext> options):base(options) {
         }
         
-        DbSet<Student> Students {  get; set; }
+        public DbSet<Student> Students {  get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

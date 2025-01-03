@@ -11,7 +11,6 @@ namespace DotNetCore_New.Data.Config
             builder.HasKey(x => x.StudentId);
 
             builder.Property(x => x.StudentId).UseIdentityColumn();
-
             builder.Property(n => n.StudentName).IsRequired().HasMaxLength(250);
             builder.Property(n => n.StudentEmail).IsRequired().HasMaxLength(250);
             builder.Property(n => n.StudentPhone).IsRequired(false).HasMaxLength(15);
@@ -33,6 +32,22 @@ namespace DotNetCore_New.Data.Config
                     StudentEmail = "subhamsingh@gmail.com",
                     StudentPhone = "8437074075",
                     DOB = new DateTime(1994,11,18)
+                },
+                 new Student()
+                {
+                    StudentId = 3,
+                    StudentName = "Tinku Singh",
+                    StudentEmail = "tinkusingh@gmail.com",
+                    StudentPhone = "8978246007",
+                    DOB = new DateTime(1994,11,19)
+                },
+                new Student()
+                {
+                    StudentId = 4,
+                    StudentName = "Arun Togi",
+                    StudentEmail = "aruntogi@gmail.com",
+                    StudentPhone = "8897534078",
+                    DOB = new DateTime(1994,07,17)
                 }
             });
         }
