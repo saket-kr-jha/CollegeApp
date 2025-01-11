@@ -1,5 +1,6 @@
 using DotNetCore_New.Configurations;
 using DotNetCore_New.Data;
+using DotNetCore_New.Data.Repository;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -18,13 +19,13 @@ builder.Services.AddDbContext<CollegeDBContext>(options =>
 //builder.Logging.AddSerilog();
 #endregion
 builder.Logging.AddLog4Net();
+builder.Services.AddTransient<IStudentRepository, StudentRepository>();
 
 builder.Services.AddControllers().AddNewtonsoftJson();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(AutoMapperConfig));
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

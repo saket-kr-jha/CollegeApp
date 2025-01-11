@@ -9,7 +9,6 @@ namespace DotNetCore_New.Data.Config
         {
             builder.ToTable("Students");
             builder.HasKey(x => x.StudentId);
-
             builder.Property(x => x.StudentId).UseIdentityColumn();
             builder.Property(n => n.StudentName).IsRequired().HasMaxLength(250);
             builder.Property(n => n.StudentEmail).IsRequired().HasMaxLength(250);
