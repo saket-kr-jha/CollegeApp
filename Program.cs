@@ -19,7 +19,8 @@ builder.Services.AddDbContext<CollegeDBContext>(options =>
 //builder.Logging.AddSerilog();
 #endregion
 builder.Logging.AddLog4Net();
-builder.Services.AddTransient<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped(typeof(ICollegeRepository<>), typeof(CollegeRepository<>));
 
 builder.Services.AddControllers().AddNewtonsoftJson();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
