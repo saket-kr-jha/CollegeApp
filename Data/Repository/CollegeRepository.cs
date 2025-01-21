@@ -29,7 +29,7 @@ namespace DotNetCore_New.Data.Repository
         {
             return await _dbSet.ToListAsync();
         }
-        public async Task<T> GetByIdAsync(Expression<Func<T,bool>> filter, bool useNotracking = false)
+        public async Task<T> GetAsync(Expression<Func<T,bool>> filter, bool useNotracking = false)
         {
             if (useNotracking)
             {
@@ -39,10 +39,10 @@ namespace DotNetCore_New.Data.Repository
                 return await _dbSet.FirstOrDefaultAsync(filter);
         }
 
-        public async Task<T> GetByNameAsync(Expression<Func<T, bool>> filter)
-        {
-            return await _dbSet.FirstOrDefaultAsync(filter);
-        }
+        //public async Task<T> GetByNameAsync(Expression<Func<T, bool>> filter)
+        //{
+        //    return await _dbSet.FirstOrDefaultAsync(filter);
+        //}
 
         public async Task<T> UpdateAsync(T dbRecord)
         {

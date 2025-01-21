@@ -32,7 +32,7 @@ namespace DotNetCore_New.Data.Config
                     StudentPhone = "8437074075",
                     DOB = new DateTime(1994,11,18)
                 },
-                 new Student()
+                new Student
                 {
                     StudentId = 3,
                     StudentName = "Tinku Singh",
@@ -40,7 +40,7 @@ namespace DotNetCore_New.Data.Config
                     StudentPhone = "8978246007",
                     DOB = new DateTime(1994,11,19)
                 },
-                new Student()
+                new Student
                 {
                     StudentId = 4,
                     StudentName = "Arun Togi",
@@ -49,6 +49,11 @@ namespace DotNetCore_New.Data.Config
                     DOB = new DateTime(1994,07,17)
                 }
             });
+
+            builder.HasOne(n => n.Department).
+                    WithMany(n => n.Students).
+                    HasForeignKey(n => n.DepartmentId).
+                    HasConstraintName("FK_Students_Department");
         }
     }
 }

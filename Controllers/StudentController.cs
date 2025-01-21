@@ -2,6 +2,8 @@
 using DotNetCore_New.Data;
 using DotNetCore_New.Data.Repository;
 using DotNetCore_New.Model;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,12 +11,15 @@ namespace DotNetCore_New.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors(PolicyName = "CorsPolicy")]
+    [Authorize(Roles = "Admin")]
     public class StudentController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly ICollegeRepository<Student> _studentRepository;
+        //private readonly ICollegeRepository<Student> _studentRepository;
+        private readonly IStudentRepository _studentRepository;
 
-        public StudentController(ICollegeRepository<Student> studentRepository, IMapper mapper)
+        public StudentController(IStudentRepository studentRepository, IMapper mapper)
         {
             _studentRepository = studentRepository;
                 _mapper = mapper; 
@@ -54,7 +59,7 @@ namespace DotNetCore_New.Controllers
             {
                 return BadRequest();
             }
-            var student = await _studentRepository.GetByIdAsync(student => student.StudentId == id);
+            var student = await _studentRepository.GetAsync(student => student.StudentId == id);
 
             //notfound
             if (student == null)
@@ -78,7 +83,7 @@ namespace DotNetCore_New.Controllers
                 return BadRequest();
             }
 
-            var student = await _studentRepository.GetByNameAsync(student => student.StudentName.ToLower().Contains(name)); 
+            var student = await _studentRepository.GetAsync(student => student.StudentName.ToLower().Contains(name)); 
             if (student == null)
             {
                 return NotFound();
@@ -99,7 +104,7 @@ namespace DotNetCore_New.Controllers
             {
                 return BadRequest();
             }
-            var student = await _studentRepository.GetByIdAsync(student => student.StudentId == id);
+            var student = await _studentRepository.GetAsync(student => student.StudentId == id);
 
             //notfound
             if (student == null)
@@ -142,7 +147,7 @@ namespace DotNetCore_New.Controllers
                 return BadRequest();
             }
 
-            var existingStudent = await _studentRepository.GetByIdAsync(student => student.StudentId == model.StudentId, true);
+            var existingStudent = await _studentRepository.GetAsync(student => student.StudentId == model.StudentId, true);
             if (existingStudent == null)
             {
                 return NotFound();
@@ -167,7 +172,7 @@ namespace DotNetCore_New.Controllers
                 return BadRequest();
             }
 
-            var existingStudent = await _studentRepository.GetByIdAsync(student => student.StudentId == id, true);
+            var existingStudent = await _studentRepository.GetAsync(student => student.StudentId == id, true);
             if (existingStudent == null)
             {
                 return NotFound();

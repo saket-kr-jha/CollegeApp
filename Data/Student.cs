@@ -13,5 +13,7 @@ namespace DotNetCore_New.Data
         public string StudentEmail { get; set; }
         public string StudentPhone { get; set; }
         public DateTime DOB { get; set; }
+        public int? DepartmentId { get; set; }
+        public virtual Department? Department { get; set; }
     }
 }
