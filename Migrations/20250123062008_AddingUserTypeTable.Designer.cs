@@ -4,6 +4,7 @@ using DotNetCore_New.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DotNetCore_New.Migrations
 {
     [DbContext(typeof(CollegeDBContext))]
-    partial class CollegeDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250123062008_AddingUserTypeTable")]
+    partial class AddingUserTypeTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -235,8 +238,6 @@ namespace DotNetCore_New.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserTypeId");
-
                     b.ToTable("Users", (string)null);
                 });
 
@@ -334,18 +335,6 @@ namespace DotNetCore_New.Migrations
                     b.Navigation("Department");
                 });
 
-            modelBuilder.Entity("DotNetCore_New.Data.User", b =>
-                {
-                    b.HasOne("DotNetCore_New.Data.UserType", "UserType")
-                        .WithMany("Users")
-                        .HasForeignKey("UserTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_Users_UserTypes");
-
-                    b.Navigation("UserType");
-                });
-
             modelBuilder.Entity("DotNetCore_New.Data.UserRoleMapping", b =>
                 {
                     b.HasOne("DotNetCore_New.Data.Role", "Role")
@@ -382,11 +371,6 @@ namespace DotNetCore_New.Migrations
             modelBuilder.Entity("DotNetCore_New.Data.User", b =>
                 {
                     b.Navigation("UserRoleMappings");
-                });
-
-            modelBuilder.Entity("DotNetCore_New.Data.UserType", b =>
-                {
-                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

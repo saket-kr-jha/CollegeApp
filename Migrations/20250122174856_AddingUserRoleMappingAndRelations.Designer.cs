@@ -4,6 +4,7 @@ using DotNetCore_New.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DotNetCore_New.Migrations
 {
     [DbContext(typeof(CollegeDBContext))]
-    partial class CollegeDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250122174856_AddingUserRoleMappingAndRelations")]
+    partial class AddingUserRoleMappingAndRelations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -226,7 +229,7 @@ namespace DotNetCore_New.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserTypeId")
+                    b.Property<int>("UserType")
                         .HasColumnType("int");
 
                     b.Property<string>("Username")
@@ -234,8 +237,6 @@ namespace DotNetCore_New.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserTypeId");
 
                     b.ToTable("Users", (string)null);
                 });
@@ -264,54 +265,6 @@ namespace DotNetCore_New.Migrations
                     b.ToTable("UserRoleMappings", (string)null);
                 });
 
-            modelBuilder.Entity("DotNetCore_New.Data.UserType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(1500)
-                        .HasColumnType("nvarchar(1500)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserTypes", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "For Students",
-                            Name = "Student"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description = "For Faculty",
-                            Name = "Faculty"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Description = "For Supporting Faculty",
-                            Name = "Supporting Faculty"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Description = "For Parents",
-                            Name = "Parents"
-                        });
-                });
-
             modelBuilder.Entity("DotNetCore_New.Data.RolePrivilage", b =>
                 {
                     b.HasOne("DotNetCore_New.Data.Role", "Role")
@@ -332,18 +285,6 @@ namespace DotNetCore_New.Migrations
                         .HasConstraintName("FK_Students_Department");
 
                     b.Navigation("Department");
-                });
-
-            modelBuilder.Entity("DotNetCore_New.Data.User", b =>
-                {
-                    b.HasOne("DotNetCore_New.Data.UserType", "UserType")
-                        .WithMany("Users")
-                        .HasForeignKey("UserTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_Users_UserTypes");
-
-                    b.Navigation("UserType");
                 });
 
             modelBuilder.Entity("DotNetCore_New.Data.UserRoleMapping", b =>
@@ -382,11 +323,6 @@ namespace DotNetCore_New.Migrations
             modelBuilder.Entity("DotNetCore_New.Data.User", b =>
                 {
                     b.Navigation("UserRoleMappings");
-                });
-
-            modelBuilder.Entity("DotNetCore_New.Data.UserType", b =>
-                {
-                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

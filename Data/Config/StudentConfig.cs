@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DotNetCore_New.Data.Config
 {
-    public class StudentConfig: IEntityTypeConfiguration<Student>   
+    public class StudentConfig : IEntityTypeConfiguration<Student>   
     {
         public void Configure(EntityTypeBuilder<Student> builder)
         {
