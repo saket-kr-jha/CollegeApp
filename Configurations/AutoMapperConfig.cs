@@ -8,6 +8,8 @@ namespace DotNetCore_New.Configurations
     {
        public AutoMapperConfig() {
             CreateMap<StudentDTO, Student>().ReverseMap();
+            CreateMap<RoleDTO, Role>().ReverseMap();
+
 
             //configuration for different property names
             //CreateMap<StudentDTO, Student>().ForMember(n => n.StudentId, opt => opt.MapFrom(x => x.Id)).ReverseMap();
