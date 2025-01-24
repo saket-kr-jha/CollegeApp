@@ -1,6 +1,7 @@
 using DotNetCore_New.Configurations;
 using DotNetCore_New.Data;
 using DotNetCore_New.Data.Repository;
+using DotNetCore_New.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -24,6 +25,7 @@ builder.Services.AddDbContext<CollegeDBContext>(options =>
 builder.Logging.AddLog4Net();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped(typeof(ICollegeRepository<>), typeof(CollegeRepository<>));
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddControllers().AddNewtonsoftJson();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -64,6 +66,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.Logger.LogInformation("Application started");
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseCors("CorsPolicy");

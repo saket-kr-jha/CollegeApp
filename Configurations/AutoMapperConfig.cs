@@ -9,6 +9,9 @@ namespace DotNetCore_New.Configurations
        public AutoMapperConfig() {
             CreateMap<StudentDTO, Student>().ReverseMap();
             CreateMap<RoleDTO, Role>().ReverseMap();
+            CreateMap<RolePrivilageDTO, RolePrivilage>().ReverseMap();
+            CreateMap<UserDTO, User>().ReverseMap();
+            CreateMap<UserReadOnlyDTO, User>().ReverseMap();
 
 
             //configuration for different property names
