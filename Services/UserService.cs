@@ -56,6 +56,52 @@ namespace DotNetCore_New.Services
             var user = await _userRepository.GetAsync(u => u.Username.Equals(name));
             return _mapper.Map<UserReadOnlyDTO>(user);
         }
+        public async Task<bool> UpdateUserAsync(UserDTO userDTO)
+        {
+            ArgumentNullException.ThrowIfNull(userDTO, nameof(userDTO));
+            var existingUser = await _userRepository.GetAsync(x => x.Id == userDTO.Id, true);
+            if (existingUser == null)
+            {
+                throw new Exception("User does not exist");
+            }
+            User userToUpdate = _mapper.Map<User>(userDTO);
+            userToUpdate.ModifiedDate = DateTime.Now;
+            await _userRepository.UpdateAsync(userToUpdate);
+            return true;
+        }
+
+        public async Task<bool> UpdateUserPasswordAsync(int id, string password)
+        {
+            var user = await _userRepository.GetAsync(x => x.Id == id);
+            if (user == null)
+            {
+                throw new Exception("User does not exist");
+            }
+            if(string.IsNullOrEmpty(password))
+            {
+                throw new Exception("Password cannot be empty");
+            }
+            var passwordHashWithSalt = CreatePasswordHashWithSalt(password);
+            user.Password = passwordHashWithSalt.PasswordHash;
+            user.PasswordSalt = passwordHashWithSalt.Salt;
+            await _userRepository.UpdateAsync(user);
+            return true;
+        }
+        public async Task<bool> DeleteUserAsync(int id)
+        {
+            if (id <= 0)
+            {
+                throw new Exception("Invalid user id");
+            }
+            var user = await _userRepository.GetAsync(x => x.Id == id);
+            if (user == null)
+            {
+                throw new Exception("User does not exist");
+            }
+            user.IsDeleted = true;
+            await _userRepository.UpdateAsync(user);
+            return true;
+        }
         public (string PasswordHash, string Salt) CreatePasswordHashWithSalt(string password)
         {
             var salt = new byte[128 / 8];

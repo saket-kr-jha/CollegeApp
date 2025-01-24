@@ -8,6 +8,9 @@ namespace DotNetCore_New.Services
         Task<List<UserReadOnlyDTO>> GetUsersAsync();
         Task<UserReadOnlyDTO> GetUserByIdAsync(int id);
         Task<UserReadOnlyDTO> GetUserByNameAsync(string name);
+        Task<bool> UpdateUserAsync(UserDTO userDTO);
+        Task<bool> DeleteUserAsync(int id);
+        Task<bool> UpdateUserPasswordAsync(int id, string password);
         public (string PasswordHash, string Salt) CreatePasswordHashWithSalt(string password);
     }
 }

@@ -173,6 +173,150 @@ namespace DotNetCore_New.Controllers
                 return _apiResponse;
             }
         }
+        [HttpPost]
+        [Route("UpdateUser")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<ActionResult<APIResponse>> UpdateUserAsync(UserDTO userDTO)
+        {
+            try
+            {   
+                _logger.LogInformation("Updating user");
+                if (userDTO == null)
+                {
+                    _logger.LogError("User data is required");
+                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                    _apiResponse.Status = false;
+                    _apiResponse.StatusMessage = "User data is required";
+                    return _apiResponse;
+                }
+                var result = await _userService.UpdateUserAsync(userDTO);
+                if (result)
+                {
+                    _logger.LogInformation("User updated successfully");
+                    _apiResponse.StatusCode = HttpStatusCode.OK;
+                    _apiResponse.Status = true;
+                    _apiResponse.StatusMessage = "User updated successfully";
+                    _apiResponse.Data = result;
+                    return Ok(_apiResponse);
+                }
+                else
+                {
+                    _logger.LogError("User update failed");
+                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                    _apiResponse.Status = false;
+                    _apiResponse.StatusMessage = "User update failed";
+                    return _apiResponse;
+                }
+            }
+            catch (Exception ex)
+            {
+                _apiResponse.Data = null;
+                _apiResponse.Status = false;
+                _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
+                _apiResponse.StatusMessage = ex.Message;
+                return _apiResponse;
+            }
+        }
+        [HttpPut]
+        [Route("UpdateUserPassword")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<ActionResult<APIResponse>> UpdateUserPasswordAsync(int id, string password)
+        {
+            try
+            {
+                _logger.LogInformation("Updating user password");
+                if (id <= 0)
+                {
+                    _logger.LogError("Invalid user id");
+                    return BadRequest();
+                }
+                if (string.IsNullOrEmpty(password))
+                {
+                    _logger.LogError("Password cannot be empty");
+                    return BadRequest();
+                }
+                var result = await _userService.UpdateUserPasswordAsync(id, password);
+                if (result)
+                {
+                    _logger.LogInformation("User password updated successfully");
+                    _apiResponse.StatusCode = HttpStatusCode.OK;
+                    _apiResponse.Status = true;
+                    _apiResponse.StatusMessage = "User password updated successfully";
+                    _apiResponse.Data = result;
+                    return Ok(_apiResponse);
+                }
+                else
+                {
+                    _logger.LogError("User password update failed");
+                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                    _apiResponse.Status = false;
+                    _apiResponse.StatusMessage = "User password update failed";
+                    return _apiResponse;
+                }
+            }
+            catch (Exception ex)
+            {
+                _apiResponse.Data = null;
+                _apiResponse.Status = false;
+                _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
+                _apiResponse.StatusMessage = ex.Message;
+                return _apiResponse;
+            }
+        }
+
+        [HttpDelete]
+        [Route("DeleteUser/{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<ActionResult<APIResponse>> DeleteUserAsync(int id)
+        {
+            try
+            {
+                _logger.LogInformation("Deleting user");
+                if (id <= 0)
+                {
+                    _logger.LogError("Invalid user id");
+                    return BadRequest();
+                }
+                var result = await _userService.DeleteUserAsync(id);
+                if (result)
+                {
+                    _logger.LogInformation("User deleted successfully");
+                    _apiResponse.StatusCode = HttpStatusCode.OK;
+                    _apiResponse.Status = true;
+                    _apiResponse.StatusMessage = "User deleted successfully";
+                    _apiResponse.Data = result;
+                    return Ok(_apiResponse);
+                }
+                else
+                {
+                    _logger.LogError("User deletion failed");
+                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                    _apiResponse.Status = false;
+                    _apiResponse.StatusMessage = "User deletion failed";
+                    return _apiResponse;
+                }
+            }
+            catch (Exception ex)
+            {
+                _apiResponse.Data = null;
+                _apiResponse.Status = false;
+                _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
+                _apiResponse.StatusMessage = ex.Message;
+                return _apiResponse;
+            }
+        }
 
     }
 }
